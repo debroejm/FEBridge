@@ -1,8 +1,8 @@
 
 # Blocks
-tile.gexmarket:blockShopPersonal.name=Personal Shop
-tile.gexmarket:blockShopAdmin.name=Admin Shop
-tile.gexmarket:blockServicePersonal.name=Personal Service
-tile.gexmarket:blockServiceAdmin.name=Admin Service
-tile.gexmarket:blockTollGatePersonal.name=Personal Toll Gate
-tile.gexmarket:blockTollGateAdmin.name=Admin Toll Gate
+tile.febridge:blockShopPersonal.name=Personal Shop
+tile.febridge:blockShopAdmin.name=Admin Shop
+tile.febridge:blockServicePersonal.name=Personal Service
+tile.febridge:blockServiceAdmin.name=Admin Service
+tile.febridge:blockTollGatePersonal.name=Personal Toll Gate
+tile.febridge:blockTollGateAdmin.name=Admin Toll Gate

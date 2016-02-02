@@ -81,7 +81,13 @@ public class CommandService extends FEcmdModuleCommands {
                 else { printFullHelp(player); return; }
             }
 
-            if(relative) coords[i] = ((int)player.posX) + value;
+            if(relative) {
+                switch(i) {
+                    case 0: coords[i] = ((int)player.posX) + value; break;
+                    case 1: coords[i] = ((int)player.posY) + value; break;
+                    case 2: coords[i] = ((int)player.posZ) + value; break;
+                }
+            }
             else coords[i] = value;
         }
 

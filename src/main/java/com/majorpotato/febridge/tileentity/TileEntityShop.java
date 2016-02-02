@@ -108,6 +108,12 @@ public class TileEntityShop extends TileEntity implements IInventory, ICurrencyS
                         if (player.inventory.addItemStackToInventory(result)) {
                             playerWallet.withdraw(buyPrice * itemTemplate.getMaxStackSize());
                             player.addChatMessage(new ChatComponentText("§e§oYou have paid " + (buyPrice * itemTemplate.getMaxStackSize()) + " " + APIRegistry.economy.currency(2)+" ("+playerWallet.get()+" Remaining)"));
+                        } else {
+                            int bought = itemTemplate.getMaxStackSize()-result.stackSize;
+                            if(bought > 0) {
+                                playerWallet.withdraw(buyPrice * bought);
+                                player.addChatMessage(new ChatComponentText("§e§oYou have paid " + (buyPrice * bought) + " " + APIRegistry.economy.currency(2) + " (" + playerWallet.get() + " Remaining)"));
+                            }
                         }
                     } else {
                         player.addChatMessage(new ChatComponentText("§e§oYou don't have enough "+APIRegistry.economy.currency(2)+" to Pay For "+itemTemplate.getMaxStackSize()+" of this Item."));
@@ -149,6 +155,14 @@ public class TileEntityShop extends TileEntity implements IInventory, ICurrencyS
                             player.addChatMessage(new ChatComponentText("§e§oYou have paid " + (buyPrice * itemTemplate.getMaxStackSize()) + " " + APIRegistry.economy.currency(2)+" ("+playerWallet.get()+" Remaining)"));
                             ownerWallet.add(buyPrice * withdrawAmount);
                             itemCount -= withdrawAmount;
+                        } else {
+                            int bought = withdrawAmount-result.stackSize;
+                            if(bought > 0) {
+                                playerWallet.withdraw(buyPrice * bought);
+                                player.addChatMessage(new ChatComponentText("§e§oYou have paid " + (buyPrice * bought) + " " + APIRegistry.economy.currency(2) + " (" + playerWallet.get() + " Remaining)"));
+                                ownerWallet.add(buyPrice * bought);
+                                itemCount -= bought;
+                            }
                         }
                     } else {
                         player.addChatMessage(new ChatComponentText("§e§oYou don't have enough "+APIRegistry.economy.currency(2)+" to Pay For "+itemTemplate.getMaxStackSize()+" of this Item."));

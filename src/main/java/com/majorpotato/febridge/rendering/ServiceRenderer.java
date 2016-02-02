@@ -109,17 +109,17 @@ public class ServiceRenderer extends TileEntitySpecialRenderer {
                     GL11.glRotatef(180.0f, 0.0f, 0.0f, 1.0f);
                     break;
                 case NORTH:
-                    GL11.glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
                     GL11.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
                     break;
                 case SOUTH:
-                    GL11.glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
                     GL11.glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
                     break;
                 case EAST:
+                    GL11.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
                     GL11.glRotatef(90.0f, 0.0f, 0.0f, 1.0f);
                     break;
                 case WEST:
+                    GL11.glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
                     GL11.glRotatef(-90.0f, 0.0f, 0.0f, 1.0f);
                     break;
                 default: break;
