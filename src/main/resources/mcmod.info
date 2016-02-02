@@ -1,0 +1,19 @@
+[
+{
+  "modid": "FEBridge",
+  "name": "Forge Essentials Bridge",
+  "description": "'Bridge' Mod for Forge Essentials, which provides content that requires both the Server and the Client.",
+  "version": "1.7.10-0.0.1",
+  "mcversion": "1.7.10",
+  "url": "",
+  "updateUrl": "",
+  "authorList": [
+    "majorpotato"
+  ],
+  "credits": "majorpotato",
+  "logoFile": "",
+  "screenshots": [
+  ],
+  "parent":""
+}
+]
