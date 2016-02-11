@@ -32,5 +32,5 @@ public interface ICurrencyService {
     int getYCoord();
     int getZCoord();
 
-    World getWorldObj();
+    World getWorld();
 }

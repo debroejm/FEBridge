@@ -31,4 +31,14 @@ public class ClientProxy extends CommonProxy {
 
         RenderingRegistry.registerEntityRenderingHandler(EntityCoin.class, new RenderCoin());
     }
+
+    @Override
+    public void registerCoinLootHandler() {
+        // NOOP
+    }
+
+    @Override
+    public void registerServerLoadThings() {
+        // NOOP
+    }
 }

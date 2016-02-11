@@ -1,5 +1,6 @@
 package com.majorpotato.febridge;
 
+import com.forgeessentials.api.APIRegistry;
 import com.forgeessentials.core.misc.FECommandManager;
 import com.majorpotato.febridge.client.handler.GuiHandler;
 import com.majorpotato.febridge.commands.*;
@@ -14,7 +15,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.common.MinecraftForge;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION, guiFactory = Reference.GUI_FACTORY_CLASS)
 public class FEBridge {
@@ -31,7 +31,7 @@ public class FEBridge {
         // Configuration, not really used except for GUI stuff....
         ConfigHandler.init(event.getSuggestedConfigurationFile());
         FMLCommonHandler.instance().bus().register(new ConfigHandler());
-        MinecraftForge.EVENT_BUS.register(new CoinLootHandler());
+        proxy.registerCoinLootHandler();
 
         // Network Handler
         PacketHandler.init();
@@ -64,12 +64,6 @@ public class FEBridge {
 
     @Mod.EventHandler
     public void serverLoad(FMLServerStartingEvent event) {
-
-        // Commands
-        FECommandManager.registerCommand(new CommandService());
-
-        // Permission Nodes
-        ModPermissions.init();
-
+        proxy.registerServerLoadThings();
     }
 }

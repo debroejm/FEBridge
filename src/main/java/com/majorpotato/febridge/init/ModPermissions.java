@@ -3,6 +3,8 @@ package com.majorpotato.febridge.init;
 
 import com.forgeessentials.api.APIRegistry;
 import com.forgeessentials.economy.ModuleEconomy;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.monster.IMob;
@@ -11,6 +13,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraftforge.permission.PermissionLevel;
 
+@SideOnly(Side.SERVER)
 public class ModPermissions {
 
     public static final String PERM_SERVICES = ModuleEconomy.PERM + ".services";

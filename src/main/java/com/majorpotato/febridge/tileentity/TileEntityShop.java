@@ -5,6 +5,7 @@ import com.forgeessentials.api.UserIdent;
 import com.forgeessentials.api.economy.Wallet;
 import com.majorpotato.febridge.FEBridge;
 import com.majorpotato.febridge.init.ModPermissions;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,6 +17,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.UUID;
@@ -65,7 +67,7 @@ public class TileEntityShop extends TileEntity implements IInventory, ICurrencyS
     public boolean leftClick(EntityPlayer player) {
         if(worldObj.isRemote) return false;
 
-        if(!APIRegistry.perms.checkPermission(player, ModPermissions.PERM_SERVICES_BUY)) {
+        if(Loader.isModLoaded("ForgeEssentials") && !APIRegistry.perms.checkPermission(player, ModPermissions.PERM_SERVICES_BUY)) {
             player.addChatMessage(new ChatComponentText("§e§oYou don't have permission to buy from Services."));
             return true;
         }
@@ -81,11 +83,36 @@ public class TileEntityShop extends TileEntity implements IInventory, ICurrencyS
         else {
             if(buyPrice < 1) return false;
 
-            Wallet playerWallet = APIRegistry.economy.getWallet(UserIdent.get(player));
-            if(playerWallet == null) return false;
-
+            if(!Loader.isModLoaded("ForgeEssentials")) {
+                // ~--- SINGLE WITHDRAW ---~
+                if(player.isSneaking()) {
+                    ItemStack result = itemTemplate.copy();
+                    result.stackSize = 1;
+                    if(adminShop) player.inventory.addItemStackToInventory(result);
+                    else if(itemCount > 0) {
+                        if(player.inventory.addItemStackToInventory(result)) itemCount--;
+                    }
+                }
+                // ~--- ALL WITHDRAW ---~
+                else {
+                    ItemStack result = itemTemplate.copy();
+                    if(adminShop) {
+                        result.stackSize = itemTemplate.getMaxStackSize();
+                        player.inventory.addItemStackToInventory(result);
+                    } else {
+                        int withdrawAmount = itemTemplate.getMaxStackSize();
+                        if (withdrawAmount > itemCount) withdrawAmount = itemCount;
+                        result.stackSize = withdrawAmount;
+                        player.inventory.addItemStackToInventory(result);
+                        itemCount -= (withdrawAmount - result.stackSize);
+                    }
+                }
+            }
             // ~--- ADMIN SHOP ---~
-            if(adminShop) {
+            else if(adminShop) {
+                Wallet playerWallet = APIRegistry.economy.getWallet(UserIdent.get(player));
+                if(playerWallet == null) return false;
+
                 // ~--- SINGLE WITHDRAW ---~
                 if(player.isSneaking()) {
                     if(playerWallet.covers(buyPrice)) {
@@ -123,6 +150,8 @@ public class TileEntityShop extends TileEntity implements IInventory, ICurrencyS
             }
             // ~--- PLAYER SHOP ---~
             else {
+                Wallet playerWallet = APIRegistry.economy.getWallet(UserIdent.get(player));
+                if(playerWallet == null) return false;
                 Wallet ownerWallet = APIRegistry.economy.getWallet(UserIdent.get(owner));
                 if(ownerWallet == null) return false;
 
@@ -179,7 +208,7 @@ public class TileEntityShop extends TileEntity implements IInventory, ICurrencyS
     public boolean rightClick(EntityPlayer player) {
         if(worldObj.isRemote) return false;
 
-        if(!APIRegistry.perms.checkPermission(player, ModPermissions.PERM_SERVICES_SELL)) {
+        if(Loader.isModLoaded("ForgeEssentials") && !APIRegistry.perms.checkPermission(player, ModPermissions.PERM_SERVICES_SELL)) {
             player.addChatMessage(new ChatComponentText("§e§oYou don't have permission to sell to Services."));
             return true;
         }
@@ -199,10 +228,21 @@ public class TileEntityShop extends TileEntity implements IInventory, ICurrencyS
             // Must be the same type for depositing
             if(!(depositItem.isItemEqual(itemTemplate) && ItemStack.areItemStackTagsEqual(depositItem, itemTemplate))) return false;
 
-            Wallet playerWallet = APIRegistry.economy.getWallet(UserIdent.get(player));
-
+            if(!Loader.isModLoaded("ForgeEssentials")) {
+                if(adminShop) return true;
+                if(player.isSneaking()) {
+                    if(depositItem.stackSize > 0) {
+                        depositItem.stackSize--;
+                        itemCount++;
+                    } else return false;
+                } else {
+                    itemCount += depositItem.stackSize;
+                    depositItem.stackSize = 0;
+                }
+            }
             // ~--- ADMIN SHOP ---~
-            if(adminShop) {
+            else if(adminShop) {
+                Wallet playerWallet = APIRegistry.economy.getWallet(UserIdent.get(player));
                 // ~--- SINGLE DEPOSIT ---~
                 if(player.isSneaking()) {
                     if(depositItem.stackSize > 0) {
@@ -220,6 +260,7 @@ public class TileEntityShop extends TileEntity implements IInventory, ICurrencyS
             }
             // ~--- PLAYER SHOP ---~
             else {
+                Wallet playerWallet = APIRegistry.economy.getWallet(UserIdent.get(player));
                 UserIdent ownerIdent = UserIdent.get(owner);
                 if(ownerIdent == null) return false;
                 Wallet ownerWallet = APIRegistry.economy.getWallet(ownerIdent);
@@ -315,6 +356,8 @@ public class TileEntityShop extends TileEntity implements IInventory, ICurrencyS
     public int getYCoord() { return yCoord; }
     @Override
     public int getZCoord() { return zCoord; }
+    @Override
+    public World getWorld() { return worldObj; }
 
     public ForgeDirection getDirection() { return direction; }
 

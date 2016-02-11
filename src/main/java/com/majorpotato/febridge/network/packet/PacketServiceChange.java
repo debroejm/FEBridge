@@ -24,7 +24,7 @@ public class PacketServiceChange extends BasicPacket {
         data.writeInt(service.getXCoord());
         data.writeInt(service.getYCoord());
         data.writeInt(service.getZCoord());
-        data.writeInt(service.getWorldObj().provider.dimensionId);
+        data.writeInt(service.getWorld().provider.dimensionId);
         data.writeInt(service.getBuyPrice());
         data.writeInt(service.getSellPrice());
     }

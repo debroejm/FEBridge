@@ -29,7 +29,7 @@ repositories {
 apply plugin: 'forge'
 //apply plugin: 'org.spongepowered.mixin'
 
-version = "1.7.10-0.0.1"
+version = "1.7.10-0.1.0"
 group= "com.majorpotato.febridge" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "FEBridge"
 

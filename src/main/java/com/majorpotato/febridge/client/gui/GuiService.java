@@ -86,7 +86,7 @@ public class GuiService extends GuiContainer {
         try { sellPrice = Integer.parseInt(textSellPrice); }
         catch(Exception ex) { sellPrice = 0; }
         service.setSellPrice(sellPrice);
-        service.markDirty();
+        //service.markDirty(); // Server-Side
         PacketBuilder.instance().sendServiceDataChangePacket(service);
     }
 

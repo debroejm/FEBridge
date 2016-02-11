@@ -6,6 +6,7 @@ import com.forgeessentials.api.UserIdent;
 import com.forgeessentials.api.economy.Wallet;
 import com.majorpotato.febridge.FEBridge;
 import com.majorpotato.febridge.init.ModPermissions;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -15,6 +16,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.world.World;
 
 import java.util.UUID;
 
@@ -63,7 +65,7 @@ public class TileEntityService extends TileEntity implements ICurrencyService {
     public boolean rightClick(EntityPlayer player) {
         if(worldObj.isRemote) return false;
 
-        if(!APIRegistry.perms.checkPermission(player, ModPermissions.PERM_SERVICES_BUY)) {
+        if(Loader.isModLoaded("ForgeEssentials") && !APIRegistry.perms.checkPermission(player, ModPermissions.PERM_SERVICES_BUY)) {
             player.addChatMessage(new ChatComponentText("§e§oYou don't have permission to buy from Services."));
             return true;
         }
@@ -76,16 +78,21 @@ public class TileEntityService extends TileEntity implements ICurrencyService {
 
         if(buyPrice < 1) return false; // Means this service is de-activated. Wouldn't know why, but whatever...
 
-        Wallet userWallet = APIRegistry.economy.getWallet(UserIdent.get(player));
+        if(Loader.isModLoaded("ForgeEssentials")) {
+            Wallet userWallet = APIRegistry.economy.getWallet(UserIdent.get(player));
 
-        if(userWallet.covers(buyPrice)) {
-            userWallet.withdraw(buyPrice);
-            player.addChatMessage(new ChatComponentText("§e§oYou have paid " + buyPrice + " " + APIRegistry.economy.currency(2)+" ("+userWallet.get()+" Remaining)"));
-            if(!adminService) APIRegistry.economy.getWallet(UserIdent.get(owner)).add(buyPrice);
+            if (userWallet.covers(buyPrice)) {
+                userWallet.withdraw(buyPrice);
+                player.addChatMessage(new ChatComponentText("§e§oYou have paid " + buyPrice + " " + APIRegistry.economy.currency(2) + " (" + userWallet.get() + " Remaining)"));
+                if (!adminService) APIRegistry.economy.getWallet(UserIdent.get(owner)).add(buyPrice);
+                activeTicks = 60;
+                activate(player);
+            } else {
+                player.addChatMessage(new ChatComponentText("§e§oYou don't have enough " + APIRegistry.economy.currency(2) + " to Pay For this Service."));
+            }
+        } else {
             activeTicks = 60;
             activate(player);
-        } else {
-            player.addChatMessage(new ChatComponentText("§e§oYou don't have enough "+APIRegistry.economy.currency(2)+" to Pay For this Service."));
         }
 
         return true;
@@ -122,6 +129,13 @@ public class TileEntityService extends TileEntity implements ICurrencyService {
     public int getYCoord() { return yCoord; }
     @Override
     public int getZCoord() { return zCoord; }
+    @Override
+    public World getWorld() { return worldObj; }
+
+    @Override
+    public void markDirty() {
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
 
 
 

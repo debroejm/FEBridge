@@ -10,6 +10,8 @@ import com.majorpotato.febridge.init.ModPermissions;
 import com.majorpotato.febridge.tileentity.ICurrencyService;
 import com.majorpotato.febridge.util.FormatHelper;
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -21,6 +23,7 @@ import net.minecraftforge.permission.PermissionLevel;
 import java.util.ArrayList;
 import java.util.List;
 
+@SideOnly(Side.SERVER)
 public class CommandService extends FEcmdModuleCommands {
 
     @Override

@@ -7,11 +7,14 @@ import com.forgeessentials.economy.ModuleEconomy;
 import com.majorpotato.febridge.entity.EntityCoin;
 import com.majorpotato.febridge.init.ModPermissions;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 
+@SideOnly(Side.SERVER)
 public class CoinLootHandler {
 
     @SubscribeEvent
@@ -42,6 +45,7 @@ public class CoinLootHandler {
         int valueLeft = value+fidgetFactor;
         while(valueLeft > 0) {
             int subValue = (int)(value / (Math.random()*7.0f+3));
+            if(subValue > 50) subValue = 45 + (int)(Math.random()*11.0f);
             if(subValue > valueLeft) subValue = valueLeft;
             EntityCoin coin = new EntityCoin(world, xPos, yPos, zPos, subValue);
             world.spawnEntityInWorld(coin);

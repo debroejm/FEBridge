@@ -3,6 +3,7 @@ package com.majorpotato.febridge.entity;
 
 import com.forgeessentials.api.APIRegistry;
 import com.forgeessentials.api.UserIdent;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
@@ -191,7 +192,7 @@ public class EntityCoin extends Entity {
     @Override
     public void onCollideWithPlayer(EntityPlayer player) {
         if(!this.worldObj.isRemote) {
-            APIRegistry.economy.getWallet(UserIdent.get(player)).add(coinValue);
+            if(Loader.isModLoaded("ForgeEssentials")) APIRegistry.economy.getWallet(UserIdent.get(player)).add(coinValue);
             this.setDead();
         }
     }
