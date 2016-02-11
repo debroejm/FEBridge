@@ -36,31 +36,20 @@ public class ModPermissions {
     // In all honesty, this should probably be in the core FE
     private static void registerEntityNodes() {
         for(Object object : EntityList.classToStringMapping.keySet()) {
-            boolean valid = true;
-            int bounty = 0;
-
             if(object instanceof Class) { // It Should be
                 Class entityClass = (Class)object;
-                try {
-                    Object entity = entityClass.getConstructor(World.class).newInstance(MinecraftServer.getServer().worldServerForDimension(0));
 
-                    if(entity instanceof IBossDisplayData) {
-                        bounty = 500;
-                    } else if(entity instanceof IMob) {
-                        bounty = 25;
-                    } else if(entity instanceof IAnimals) {
-                        bounty = 5;
-                    } else valid = false;
+                int bounty = 0;
+                if(IBossDisplayData.class.isAssignableFrom(entityClass)) {
+                    bounty = 1000;
+                } else if(IMob.class.isAssignableFrom(entityClass)) {
+                    bounty = 25;
+                } else if(IAnimals.class.isAssignableFrom(entityClass)) {
+                    bounty = 5;
+                } else continue;
 
-                    if(valid) {
-                        Object strObj = EntityList.classToStringMapping.get(object);
-                        String entityName;
-                        if(strObj instanceof String) entityName = (String)strObj; else continue;
-                        APIRegistry.perms.registerPermissionProperty(PERM_BOUNTY+"."+entityName, bounty+"");
-                    }
-                } catch(Exception ex) {
-                    // Do nothing
-                }
+                Object strObj = EntityList.classToStringMapping.get(object);
+                if(strObj instanceof String) APIRegistry.perms.registerPermissionProperty(PERM_BOUNTY+"."+((String)strObj), bounty+"");
             }
         }
     }
