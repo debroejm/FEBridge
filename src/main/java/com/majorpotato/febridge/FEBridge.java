@@ -1,9 +1,6 @@
 package com.majorpotato.febridge;
 
-import com.forgeessentials.api.APIRegistry;
-import com.forgeessentials.core.misc.FECommandManager;
-import com.majorpotato.febridge.client.handler.GuiHandler;
-import com.majorpotato.febridge.commands.*;
+import com.majorpotato.febridge.handler.GuiHandler;
 import com.majorpotato.febridge.handler.*;
 import com.majorpotato.febridge.init.*;
 import com.majorpotato.febridge.proxy.IProxy;

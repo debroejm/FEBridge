@@ -3,6 +3,7 @@ package com.majorpotato.febridge.proxy;
 import com.forgeessentials.core.misc.FECommandManager;
 import com.majorpotato.febridge.FEBridge;
 import com.majorpotato.febridge.commands.CommandCoinLoot;
+import com.majorpotato.febridge.commands.CommandPermEditor;
 import com.majorpotato.febridge.commands.CommandService;
 import com.majorpotato.febridge.handler.CoinLootHandler;
 import com.majorpotato.febridge.init.ModPermissions;
@@ -25,6 +26,7 @@ public class ServerProxy extends CommonProxy {
         // Commands
         FECommandManager.registerCommand(new CommandService());
         FECommandManager.registerCommand(new CommandCoinLoot());
+        FECommandManager.registerCommand(new CommandPermEditor());
 
         // Permission Nodes
         ModPermissions.init();

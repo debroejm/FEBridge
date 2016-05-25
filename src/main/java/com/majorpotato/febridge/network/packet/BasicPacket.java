@@ -15,7 +15,10 @@ public abstract class BasicPacket {
 
     public enum PacketType {
         // Currently only one packet type, but can be expanded
-        SERVICE_CHANGE
+        SERVICE_CHANGE,
+        REQUEST,
+        DATA,
+        COMMAND
     }
 
     public FMLProxyPacket getPacket() {

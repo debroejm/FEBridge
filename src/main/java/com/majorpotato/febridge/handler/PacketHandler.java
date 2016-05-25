@@ -1,8 +1,7 @@
 package com.majorpotato.febridge.handler;
 
 
-import com.majorpotato.febridge.network.packet.BasicPacket;
-import com.majorpotato.febridge.network.packet.PacketServiceChange;
+import com.majorpotato.febridge.network.packet.*;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
@@ -62,6 +61,15 @@ public class PacketHandler {
             switch (type) {
                 case SERVICE_CHANGE:
                     pkt = new PacketServiceChange();
+                    break;
+                case REQUEST:
+                    pkt = new PacketRequest();
+                    break;
+                case DATA:
+                    pkt = new PacketData();
+                    break;
+                case COMMAND:
+                    pkt = new PacketCommand();
                     break;
                 default:
                     System.out.println("Packet is Unknown");
