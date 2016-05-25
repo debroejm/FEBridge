@@ -1,4 +1,4 @@
-package com.majorpotato.febridge.client.handler;
+package com.majorpotato.febridge.handler;
 
 
 import com.majorpotato.febridge.FEBridge;
@@ -15,6 +15,10 @@ import net.minecraft.world.World;
 
 public class GuiHandler implements IGuiHandler {
 
+    public static final int GUI_SHOP = 0;
+    public static final int GUI_SHOP_UNBOUND = 1;
+    public static final int GUI_PERM_EDITOR = 2;
+
     public GuiHandler()
     {
         NetworkRegistry.INSTANCE.registerGuiHandler(FEBridge.instance, this);
@@ -26,14 +30,16 @@ public class GuiHandler implements IGuiHandler {
         TileEntity entity = world.getTileEntity(x, y, z);
         switch(id)
         {
-            case 0:
+            case GUI_SHOP:
                 if(entity instanceof TileEntityShop) return new ContainerShop(player.inventory, (TileEntityShop)entity);
                 else if(entity instanceof ICurrencyService) return new ContainerBasic(player.inventory, x, y, z);
                 else return null;
-            case 1:
+            case GUI_SHOP_UNBOUND:
                 if(entity instanceof TileEntityShop) return new ContainerShop(player.inventory, (TileEntityShop)entity, true);
                 else if(entity instanceof ICurrencyService) return new ContainerBasic(player.inventory);
                 else return null;
+            case GUI_PERM_EDITOR:
+                return null;
             default:
                 return null;
         }
@@ -45,11 +51,13 @@ public class GuiHandler implements IGuiHandler {
         TileEntity entity = world.getTileEntity(x, y, z);
         switch(id)
         {
-            case 0:
-            case 1:
+            case GUI_SHOP:
+            case GUI_SHOP_UNBOUND:
                 if(entity instanceof TileEntityShop) return new GuiShop(player, (TileEntityShop)entity);
                 else if(entity instanceof ICurrencyService) return new GuiService(player, (ICurrencyService)entity);
                 else return null;
+            case GUI_PERM_EDITOR:
+                return new GuiPermEditor(player);
             default:
                 return null;
         }
