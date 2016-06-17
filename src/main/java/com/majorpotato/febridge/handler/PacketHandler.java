@@ -42,8 +42,6 @@ public class PacketHandler {
         byte[] data = new byte[event.packet.payload().readableBytes()];
         event.packet.payload().readBytes(data);
 
-        System.out.println("PacketHandler Packet Received");
-
         onPacketData(data, null);
     }
 
@@ -62,14 +60,17 @@ public class PacketHandler {
                 case SERVICE_CHANGE:
                     pkt = new PacketServiceChange();
                     break;
-                case REQUEST:
-                    pkt = new PacketRequest();
+                case CACHE_REQUEST:
+                    pkt = new PacketCacheRequest();
                     break;
-                case DATA:
-                    pkt = new PacketData();
+                case CACHE_DATA:
+                    pkt = new PacketCacheData();
                     break;
                 case COMMAND:
                     pkt = new PacketCommand();
+                    break;
+                case REQUEST:
+                    pkt = new PacketRequest();
                     break;
                 default:
                     System.out.println("Packet is Unknown");

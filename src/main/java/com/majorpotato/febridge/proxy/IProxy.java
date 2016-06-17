@@ -7,6 +7,7 @@ public interface IProxy {
 
     // Server-Side
     void registerCoinLootHandler();
+    void registerPermissionHandler();
     void registerServerLoadThings();
 
 }

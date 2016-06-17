@@ -38,6 +38,11 @@ public class ClientProxy extends CommonProxy {
     }
 
     @Override
+    public void registerPermissionHandler() {
+        // NOOP
+    }
+
+    @Override
     public void registerServerLoadThings() {
         // NOOP
     }

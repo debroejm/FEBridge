@@ -52,6 +52,9 @@ public class FEBridge {
         // Recipes
         ModRecipes.init();
 
+        // Server-Side Permission Event Handler
+        proxy.registerPermissionHandler();
+
     }
 
     @Mod.EventHandler

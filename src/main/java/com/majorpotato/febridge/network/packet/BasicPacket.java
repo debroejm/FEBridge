@@ -1,6 +1,7 @@
 package com.majorpotato.febridge.network.packet;
 
 
+import com.majorpotato.febridge.reference.Reference;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import io.netty.buffer.Unpooled;
 
@@ -11,14 +12,15 @@ import java.io.IOException;
 
 public abstract class BasicPacket {
 
-    public final static String CHANNEL_NAME = "GMK";
+    public final static String CHANNEL_NAME = Reference.MOD_ID+"_CHNL";
 
     public enum PacketType {
         // Currently only one packet type, but can be expanded
         SERVICE_CHANGE,
-        REQUEST,
-        DATA,
-        COMMAND
+        CACHE_REQUEST,
+        CACHE_DATA,
+        COMMAND,
+        REQUEST
     }
 
     public FMLProxyPacket getPacket() {
