@@ -33,16 +33,16 @@ public class CommandPermEditor extends FEcmdModuleCommands {
     public PermissionLevel getPermissionLevel() { return PermissionLevel.TRUE; }
 
     @Override
-    public String getCommandName() { return "permissioneditor"; }
+    public String getCommandName() { return "permgui"; }
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "/fepe";
+        return "/pg";
     }
 
     @Override
     public String[] getDefaultAliases() {
-        return new String[] { "permissionEditor", "fepe" };
+        return new String[] { "permgui", "pgui", "pg" };
     }
 
     @Override
